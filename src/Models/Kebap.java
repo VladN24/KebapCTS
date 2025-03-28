@@ -11,7 +11,6 @@ public class Kebap {
     private Fibre fibre;
     private Healthy healthy;
 
-    // Constructor privat pentru a fi accesat prin Builder
     public Kebap(Proteina proteina, Carbohidrat carbohidrat, List<Sos> sosuri, Muratura muratura,
                   Invelis invelis, Fibre fibre, Healthy healthy) {
         this.proteina = proteina;
@@ -23,12 +22,14 @@ public class Kebap {
         this.healthy = healthy;
     }
 
-    // Metoda pentru a vizualiza ingredientele kebapului
-    public void displayIngredients() {
+    public void afiseazaIngredientele() {
         System.out.println("Proteina: " + proteina.getNume());
         System.out.println("Carbohidrat: " + carbohidrat.getNume());
         for (Sos sos : sosuri) {
-            System.out.println("Sos: " + sos.getNume() + " (Valabilitate: " + sos.getOreValabilitate() + " ore)");
+            System.out.println("Sos: " + sos.getNume());
+            if (sos instanceof SosFermentabil fermentabil) {
+                System.out.println(sos.getNume() + " e valabil " + fermentabil.getOreValabilitate() + "h");
+            }
         }
         if (muratura != null) {
             System.out.println("Muratura: " + muratura.getNume());
@@ -43,8 +44,7 @@ public class Kebap {
             System.out.println("Healthy: " + healthy.getNume());
         }
     }
-
-
+    
     public Proteina getProteina() {
         return proteina;
     }
@@ -77,5 +77,34 @@ public class Kebap {
 
     public Healthy getHealthy() {
         return healthy;
+    }
+
+
+    public void setProteina(Proteina proteina) {
+        this.proteina = proteina;
+    }
+
+    public void setCarbohidrat(Carbohidrat carbohidrat) {
+        this.carbohidrat = carbohidrat;
+    }
+
+    public void setSosuri(List<Sos> sosuri) {
+        this.sosuri = sosuri;
+    }
+
+    public void setMuratura(Muratura muratura) {
+        this.muratura = muratura;
+    }
+
+    public void setInvelis(Invelis invelis) {
+        this.invelis = invelis;
+    }
+
+    public void setFibre(Fibre fibre) {
+        this.fibre = fibre;
+    }
+
+    public void setHealthy(Healthy healthy) {
+        this.healthy = healthy;
     }
 }
