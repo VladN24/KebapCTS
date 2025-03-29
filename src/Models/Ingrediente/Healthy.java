@@ -1,4 +1,4 @@
-package Models;
+package Models.Ingrediente;
 
 import enums.TipHealthy;
 

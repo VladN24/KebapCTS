@@ -1,4 +1,4 @@
-package Models;
+package Models.Ingrediente;
 
 public abstract class Ingredient {
     protected String nume;

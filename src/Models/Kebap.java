@@ -1,5 +1,7 @@
 package Models;
 
+import Models.Ingrediente.*;
+
 import java.util.List;
 
 public class Kebap {
@@ -44,7 +46,7 @@ public class Kebap {
             System.out.println("Healthy: " + healthy.getNume());
         }
     }
-    
+
     public Proteina getProteina() {
         return proteina;
     }

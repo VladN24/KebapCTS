@@ -1,4 +1,4 @@
-package Models;
+package Models.Ingrediente;
 
 import enums.TipSos;
 
@@ -14,7 +14,4 @@ public class Sos extends Ingredient {
         return tip;
     }
 
-    //public Integer getOreValabilitate() {
-    //return oreValabilitate;
-    //}
 }

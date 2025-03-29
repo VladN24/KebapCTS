@@ -1,4 +1,4 @@
-package Models;
+package Models.Ingrediente;
 
 import enums.TipCarbohidrat;
 
@@ -10,7 +10,5 @@ public class Carbohidrat extends Ingredient {
         this.tip = tip;
     }
 
-    public TipCarbohidrat getTip() {
-        return tip;
-    }
+    public TipCarbohidrat getTip() { return tip; }
 }
