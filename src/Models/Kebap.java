@@ -25,7 +25,7 @@ public class Kebap {
         this.healthy = healthy;
     }
 
-    public void afiseazaIngredientele() {
+    public void afiseazaIngrediente() {
         System.out.println("Proteina: " + proteina.getNume());
         System.out.println("Carbohidrat: " + carbohidrat.getNume());
         for (Sos sos : sosuri) {
