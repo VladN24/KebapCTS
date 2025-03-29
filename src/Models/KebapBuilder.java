@@ -2,6 +2,7 @@ package Models;
 
 import Models.Ingrediente.*;
 import enums.*;
+import exceptions.LipsaCarbohidratException;
 import exceptions.LispaProteinaException;
 import exceptions.LimitaSosDepasitaException;
 import interfaces.IBuilder;
@@ -65,19 +66,27 @@ public class KebapBuilder implements IBuilder {
         return this;
     }
 
-//    public Kebap build() {
-//        if (kebap.getProteina() == null || kebap.getCarbohidrat() == null) {
-//            throw new IllegalStateException("Kebap-ul trebuie să aibă proteină și carbohidrat.");
-//        }
-//        kebap.setSosuri(sosuriTemp);
-//        return kebap;
-//    }
+    private void valideazaProteina() {
+        if (kebap.getProteina() == null) {
+            throw new LispaProteinaException("Kebap-ul trebuie să aibă o sursă de proteină.");
+        }
+    }
+
+    private void valideazaCarbohidrat() {
+        if (kebap.getCarbohidrat() == null) {
+            throw new LipsaCarbohidratException("Kebap-ul trebuie să aibă o sursă de carbohidrați.");
+        }
+    }
+
+    private void valideazaCompozitie() {
+        valideazaProteina();
+        valideazaCarbohidrat();
+    }
 
     public Kebap build() {
-        if (kebap.toString().contains("proteina=null") || kebap.toString().contains("carbohidrat=null")) {
-            throw new IllegalStateException("Kebap-ul trebuie să aibă proteină și carbohidrat.");
-        }
+        valideazaCompozitie();
         kebap.setSosuri(sosuriTemp);
         return kebap;
     }
+
 }
