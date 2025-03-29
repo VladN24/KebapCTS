@@ -3,6 +3,7 @@ package Models;
 import Models.Ingrediente.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Kebap {
     private Proteina proteina;
@@ -46,6 +47,25 @@ public class Kebap {
             System.out.println("Healthy: " + healthy.getNume());
         }
     }
+
+    @Override
+    public String toString() {
+        return "Kebap{" +
+                "proteina=" + proteina.getNume() +
+                ", carbohidrat=" + carbohidrat.getNume() +
+                ", sosuri=" + sosuri +
+                ", invelis=" + (invelis != null ? invelis.getNume() : "N/A") +
+                ", fibra=" + (fibre != null ? fibre.getNume() : "N/A") +
+                ", healthy=" + (healthy != null ? healthy.getNume() : "N/A") +
+                ", sosuri=" + getNumeSosuri() +
+                '}';
+    }
+
+    private String getNumeSosuri() {
+    return sosuri.stream()
+            .map(Sos::getNume)
+            .collect(Collectors.joining(", "));
+}
 
     public Proteina getProteina() {
         return proteina;
