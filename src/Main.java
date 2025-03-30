@@ -24,6 +24,25 @@ public class Main {
         listaSosuri.add(new SosFermentabil(TipSos.SAMURAI, 8));
         listaSosuri.add(new SosFermentabil(TipSos.TZATZIKI, 12));
 
+        KebapBuilder builder = new KebapBuilder();
+        try {
+            builder.adaugaProteina(TipProteina.PUI)
+                    .adaugaCarbohidrat(TipCarbohidrat.OREZ)
+                    .adaugaInvelis(TipInvelis.LIPIE)
+                    .adaugaMuratura(TipMuratura.CASTRAVETI)
+                    .adaugaFibra(TipFibre.VARZA)
+                    .adaugaHealthy(TipHealthy.RIDICHE)
+                    .adaugaSos(TipSos.USTUROI)
+                    .adaugaSos(TipSos.MAIONEZA)
+                    .adaugaSosFermentabil(TipSos.SAMURAI,8);
+
+            Kebap kebapImplicit = builder.build();
+            listaKebapuri.add(kebapImplicit);
+            System.out.println("Kebap implicit creat și adăugat în listă.");
+        } catch (LipsaProteinaException | LipsaCarbohidratException e) {
+            System.out.println("Eroare la crearea kebap-ului implicit: " + e.getMessage());
+        }
+
         while (running) {
             System.out.println("\n--- Meniu ---");
             System.out.println("1. Creează Kebap");
@@ -68,7 +87,7 @@ public class Main {
         System.out.println("Alege proteina:");
         TipProteina tipProteina = selectEnumOption(TipProteina.class);
         if (tipProteina == TipProteina.FARA) {
-            throw new LispaProteinaException("Kebap-ul trebuie să aibă o sursă de proteină.");
+            throw new LipsaProteinaException("Kebap-ul trebuie să aibă o sursă de proteină.");
         } else {
             builder.adaugaProteina(tipProteina);
         }
@@ -76,7 +95,7 @@ public class Main {
         System.out.println("Alege carbohidrat:");
         TipCarbohidrat tipCarbohidrat = selectEnumOption(TipCarbohidrat.class);
         if (tipCarbohidrat == TipCarbohidrat.FARA) {
-            throw new LipsaCarbohidratException("Kebap-ul trebuie să aibă o sursă de carbohidrați.");
+            throw new LipsaCarbohidratException();
         } else {
             builder.adaugaCarbohidrat(tipCarbohidrat);
         }

@@ -38,10 +38,16 @@ public class Kebap {
     }
 
     private String getNumeSosuri() {
-    return sosuri.stream()
-            .map(Sos::getNume)
-            .collect(Collectors.joining(", "));
-}
+        return sosuri.stream()
+                .map(sos -> {
+                    if (sos instanceof SosFermentabil sf) {
+                        return sf.getTip() + "(" + sf.getOreValabilitate() + "h)";
+                    }
+                    return sos.getTip().toString();
+                })
+                .collect(Collectors.joining(", "));
+    }
+
 
     public Proteina getProteina() {
         return proteina;

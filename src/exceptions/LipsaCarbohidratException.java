@@ -1,7 +1,7 @@
 package exceptions;
 
 public class LipsaCarbohidratException extends RuntimeException {
-    public LipsaCarbohidratException(String message) {
-        super(message);
+    public LipsaCarbohidratException() {
+        super("Kebap-ul trebuie să aibă o sursă de carbohidrați.");
     }
 }

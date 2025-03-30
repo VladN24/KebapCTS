@@ -3,7 +3,7 @@ package Models;
 import Models.Ingrediente.*;
 import enums.*;
 import exceptions.LipsaCarbohidratException;
-import exceptions.LispaProteinaException;
+import exceptions.LipsaProteinaException;
 import exceptions.LimitaSosDepasitaException;
 import Interfaces.IBuilder;
 
@@ -51,10 +51,10 @@ public class KebapBuilder implements IBuilder {
 
     public KebapBuilder adaugaSos(TipSos tip) {
         if (sosuriTemp.size() >= 3) {
-            throw new LimitaSosDepasitaException("Nu poți adăuga mai mult de 3 sosuri.");
+            throw new LimitaSosDepasitaException();
         }
         if (kebap.getProteina() == null) {
-            throw new LispaProteinaException("Nu poți adăuga sosuri fără proteină.");
+            throw new LipsaProteinaException("Nu poți adăuga sosuri fără proteină.");
         }
         sosuriTemp.add(new Sos(tip));
         return this;
@@ -62,24 +62,25 @@ public class KebapBuilder implements IBuilder {
 
     public KebapBuilder adaugaSosFermentabil(TipSos tip, int oreValabilitate) {
         if (sosuriTemp.size() >= 3) {
-            throw new LimitaSosDepasitaException("Nu poți adăuga mai mult de 3 sosuri.");
+            throw new LimitaSosDepasitaException();
         }
         if (kebap.getProteina() == null) {
-            throw new LispaProteinaException("Nu poți adăuga sosuri fără proteină.");
+            throw new LipsaProteinaException("Nu poți adăuga sosuri fără proteină.");
         }
         sosuriTemp.add(new SosFermentabil(tip, oreValabilitate));
         return this;
     }
 
+
     private void valideazaProteina() {
         if (kebap.getProteina() == null) {
-            throw new LispaProteinaException("Kebap-ul trebuie să aibă o sursă de proteină.");
+            throw new LipsaProteinaException("Kebap-ul trebuie să aibă o sursă de proteină.");
         }
     }
 
     private void valideazaCarbohidrat() {
         if (kebap.getCarbohidrat() == null) {
-            throw new LipsaCarbohidratException("Kebap-ul trebuie să aibă o sursă de carbohidrați.");
+            throw new LipsaCarbohidratException();
         }
     }
 
