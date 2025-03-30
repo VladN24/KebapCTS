@@ -101,7 +101,24 @@ public class Main {
         }
 
         System.out.println("Alege înveliș:");
-        builder.adaugaInvelis(selectEnumOption(TipInvelis.class));
+        TipInvelis tipInvelis = selectEnumOption(TipInvelis.class);
+
+        if (tipInvelis == TipInvelis.LIPIE) {
+            System.out.println("Ești sigur că vrei LIPIE ca înveliș?");
+            System.out.println("1. Da");
+            System.out.println("2. Vreau SALATA");
+            System.out.println("3. Vreau FARA");
+
+            int confirmare = Integer.parseInt(scanner.nextLine());
+            switch (confirmare) {
+                case 1 -> builder.adaugaInvelis(TipInvelis.LIPIE);
+                case 2 -> builder.adaugaInvelis(TipInvelis.SALATA);
+                case 3 -> builder.adaugaInvelis(TipInvelis.FARA);
+                default -> System.out.println("Opțiune invalidă.");
+            }
+        } else {
+            builder.adaugaInvelis(tipInvelis);
+        }
 
         System.out.println("Alege murătură:");
         builder.adaugaMuratura(selectEnumOption(TipMuratura.class));
@@ -221,6 +238,7 @@ public class Main {
                 }
             }
             System.out.println("Sosuri încărcate din fișier.");
+            System.out.println(listaSosuri);
         } catch (IOException e) {
             e.printStackTrace();
         }
