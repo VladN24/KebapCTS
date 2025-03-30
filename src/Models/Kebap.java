@@ -25,35 +25,11 @@ public class Kebap {
         this.healthy = healthy;
     }
 
-    public void afiseazaIngrediente() {
-        System.out.println("Proteina: " + proteina.getNume());
-        System.out.println("Carbohidrat: " + carbohidrat.getNume());
-        for (Sos sos : sosuri) {
-            System.out.println("Sos: " + sos.getNume());
-            if (sos instanceof SosFermentabil fermentabil) {
-                System.out.println(sos.getNume() + " e valabil " + fermentabil.getOreValabilitate() + "h");
-            }
-        }
-        if (muratura != null) {
-            System.out.println("Muratura: " + muratura.getNume());
-        }
-        if (invelis != null) {
-            System.out.println("Invelis: " + invelis.getNume());
-        }
-        if (fibre != null) {
-            System.out.println("Fibre: " + fibre.getNume());
-        }
-        if (healthy != null) {
-            System.out.println("Healthy: " + healthy.getNume());
-        }
-    }
-
     @Override
     public String toString() {
         return "Kebap{" +
                 "proteina=" + proteina.getNume() +
                 ", carbohidrat=" + carbohidrat.getNume() +
-                ", sosuri=" + sosuri +
                 ", invelis=" + (invelis != null ? invelis.getNume() : "N/A") +
                 ", fibra=" + (fibre != null ? fibre.getNume() : "N/A") +
                 ", healthy=" + (healthy != null ? healthy.getNume() : "N/A") +

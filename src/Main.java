@@ -5,16 +5,24 @@ import exceptions.*;
 
 import java.io.*;
 import java.util.*;
+
 import java.util.stream.Collectors;
 
 public class Main {
     private static final List<Kebap> listaKebapuri = new ArrayList<>();
     private static final List<Sos> listaSosuri = new ArrayList<>();
     private static final Scanner scanner = new Scanner(System.in);
-
+    private static final String SOS_FILE = "sosuri.txt";
 
     public static void main(String[] args) {
         boolean running = true;
+
+        listaSosuri.add(new Sos(TipSos.MAIONEZA));
+        listaSosuri.add(new Sos(TipSos.KETCHUP));
+        listaSosuri.add(new Sos(TipSos.USTUROI));
+        listaSosuri.add(new Sos(TipSos.TAHINI));
+        listaSosuri.add(new SosFermentabil(TipSos.SAMURAI, 8));
+        listaSosuri.add(new SosFermentabil(TipSos.TZATZIKI, 12));
 
         while (running) {
             System.out.println("\n--- Meniu ---");
@@ -37,8 +45,8 @@ public class Main {
                 case 4 -> filtreazaDupaProteina();
                 case 5 -> creeazaSos();
                 case 6 -> stergeSos();
-                //case 7 -> serializeazaSosuri();
-                //case 8 -> deserializareSosuri();
+                case 7 -> serializeazaSosuri();
+                case 8 -> deserializareSosuri();
                 case 0 -> running = false;
                 default -> System.out.println("Opțiune invalidă.");
             }
@@ -160,6 +168,42 @@ public class Main {
             System.out.println("Sos șters.");
         } else {
             System.out.println("Index invalid.");
+        }
+    }
+
+    private static void serializeazaSosuri() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(SOS_FILE))) {
+            for (Sos sos : listaSosuri) {
+                if (sos instanceof SosFermentabil sf) {
+                    writer.write(sf.getTip() + "," + sf.getOreValabilitate());
+                } else {
+                    writer.write(sos.getTip().toString());
+                }
+                writer.newLine();
+            }
+            System.out.println("Sosuri salvate în fișier.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void deserializareSosuri() {
+        listaSosuri.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(SOS_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                TipSos tip = TipSos.valueOf(parts[0]);
+                if (parts.length == 2) {
+                    int ore = Integer.parseInt(parts[1]);
+                    listaSosuri.add(new SosFermentabil(tip, ore));
+                } else {
+                    listaSosuri.add(new Sos(tip));
+                }
+            }
+            System.out.println("Sosuri încărcate din fișier.");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
