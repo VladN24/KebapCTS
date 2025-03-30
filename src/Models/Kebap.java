@@ -1,11 +1,12 @@
 package Models;
 
+import interfaces.IKebap;
 import Models.Ingrediente.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Kebap {
+public class Kebap implements IKebap {
     private Proteina proteina;
     private Carbohidrat carbohidrat;
     private List<Sos> sosuri;
