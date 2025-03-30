@@ -1,5 +1,5 @@
 package enums;
 
 public enum TipInvelis {
-    LIPIE, SALATA
+    LIPIE, SALATA, FARA
 }

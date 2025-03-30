@@ -5,7 +5,7 @@ import enums.*;
 import exceptions.LipsaCarbohidratException;
 import exceptions.LispaProteinaException;
 import exceptions.LimitaSosDepasitaException;
-import interfaces.IBuilder;
+import Interfaces.IBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,11 @@ import java.util.List;
 public class KebapBuilder implements IBuilder {
     private Kebap kebap; //= new Kebap();
     private List<Sos> sosuriTemp = new ArrayList<>();
+
+    public KebapBuilder() {
+        this.kebap = new Kebap(null, null, new ArrayList<>(), null, null, null, null);
+    }
+
 
     public KebapBuilder adaugaProteina(TipProteina tip) {
         this.kebap.setProteina(new Proteina(tip));

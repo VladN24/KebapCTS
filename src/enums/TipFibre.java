@@ -1,5 +1,5 @@
 package enums;
 
 public enum TipFibre {
-    VARZA, ROSII, MORCOVI
+    VARZA, ROSII, MORCOVI, FARA
 }

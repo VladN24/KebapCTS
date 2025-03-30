@@ -1,5 +1,5 @@
 package enums;
 
 public enum TipHealthy {
-    SPANAC, RIDICHE
+    SPANAC, RIDICHE, FARA
 }

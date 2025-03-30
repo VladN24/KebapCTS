@@ -1,5 +1,5 @@
 package enums;
 
 public enum TipProteina {
-    FALAFEL, BERBECUT, PUI
+    FALAFEL, BERBECUT, PUI, FARA
 }

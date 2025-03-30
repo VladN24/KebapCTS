@@ -1,5 +1,5 @@
 package enums;
 
 public enum TipCarbohidrat {
-    OREZ, CARTOFI
+    OREZ, CARTOFI, FARA
 }

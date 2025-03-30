@@ -1,5 +1,5 @@
 package enums;
 
 public enum TipMuratura {
-    CASTRAVETI, CEAPA
+    CASTRAVETI, CEAPA, FARA
 }
