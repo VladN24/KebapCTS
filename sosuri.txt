@@ -1,6 +1,6 @@
 maioneza
 ketchup
 usturoi
-tahini
 samurai,8
 tzatziki,12
+sour,12

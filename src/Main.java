@@ -97,12 +97,14 @@ public class Main {
                 proteinaValida = true;
             } catch (LipsaProteinaException e) {
                 System.out.println(e.getMessage());
+            } catch (Exception e) {
+            System.out.println("Opțiune invalidă. Încearcă din nou.");
             }
         }
 
         TipCarbohidrat tipCarbohidrat = null;
-        boolean carboValida = false;
-        while (!carboValida) {
+        boolean carbohidratValid = false;
+        while (!carbohidratValid) {
             try {
                 System.out.println("Alege carbohidrat:");
                 tipCarbohidrat = selectEnumOption(TipCarbohidrat.class);
@@ -110,45 +112,79 @@ public class Main {
                     throw new LipsaCarbohidratException();
                 }
                 builder.adaugaCarbohidrat(tipCarbohidrat);
-                carboValida = true;
+                carbohidratValid = true;
             } catch (LipsaCarbohidratException e) {
             System.out.println(e.getMessage());
+            } catch (Exception e) {
+            System.out.println("Opțiune invalidă. Încearcă din nou.");
             }
         }
 
-        System.out.println("Alege înveliș:");
-        TipInvelis tipInvelis = selectEnumOption(TipInvelis.class);
+        boolean invelisValid = false;
+        while(!invelisValid) {
+            try {
+                System.out.println("Alege înveliș:");
+                TipInvelis tipInvelis = selectEnumOption(TipInvelis.class);
 
-        if (tipInvelis == TipInvelis.LIPIE) {
-            System.out.println("Ești sigur că vrei LIPIE ca înveliș?");
-            System.out.println("1. Da");
-            System.out.println("2. Vreau SALATA");
-            System.out.println("3. Vreau FARA");
+                if (tipInvelis == TipInvelis.LIPIE) {
+                    System.out.println("Ești sigur că vrei LIPIE ca înveliș? Învelișul cu salată este mult mai bun și mult mai sanatos!");
+                    System.out.println("1. Da");
+                    System.out.println("2. Vreau SALATA");
+                    System.out.println("3. Vreau FARA");
 
-            int confirmare = Integer.parseInt(scanner.nextLine());
-            switch (confirmare) {
-                case 1 -> builder.adaugaInvelis(TipInvelis.LIPIE);
-                case 2 -> builder.adaugaInvelis(TipInvelis.SALATA);
-                case 3 -> builder.adaugaInvelis(TipInvelis.FARA);
-                default -> System.out.println("Opțiune invalidă.");
+                    int confirmare = Integer.parseInt(scanner.nextLine());
+                    switch (confirmare) {
+                        case 1 -> builder.adaugaInvelis(TipInvelis.LIPIE);
+                        case 2 -> builder.adaugaInvelis(TipInvelis.SALATA);
+                        case 3 -> builder.adaugaInvelis(TipInvelis.FARA);
+                        default -> System.out.println("Opțiune invalidă.");
+                    }
+                } else {
+                    builder.adaugaInvelis(tipInvelis);
+                }
+                invelisValid = true;
+            } catch (Exception e) {
+                System.out.println("Opțiune invalidă. Încearcă din nou.");
             }
-        } else {
-            builder.adaugaInvelis(tipInvelis);
         }
 
-        System.out.println("Alege murătură:");
-        builder.adaugaMuratura(selectEnumOption(TipMuratura.class));
+        boolean muraturaValida = false;
+        while (!muraturaValida) {
+            try {
+                System.out.println("Alege murătură:");
+                builder.adaugaMuratura(selectEnumOption(TipMuratura.class));
+                muraturaValida = true;
+            } catch (Exception e) {
+                System.out.println("Opțiune invalidă. Încearcă din nou.");
+            }
+        }
 
-        System.out.println("Alege fibre:");
-        builder.adaugaFibra(selectEnumOption(TipFibre.class));
+        boolean fibraValida = false;
+        while (!fibraValida) {
+            try {
+                System.out.println("Alege fibre:");
+                builder.adaugaFibra(selectEnumOption(TipFibre.class));
+                fibraValida = true;
+            } catch (Exception e) {
+                System.out.println("Opțiune invalidă. Încearcă din nou.");
+            }
+        }
 
-        System.out.println("Alege healthy:");
-        builder.adaugaHealthy(selectEnumOption(TipHealthy.class));
+        boolean healthyValida = false;
+        while (!healthyValida) {
+            try {
+                System.out.println("Alege healthy:");
+                builder.adaugaHealthy(selectEnumOption(TipHealthy.class));
+                healthyValida = true;
+            } catch (Exception e) {
+                System.out.println("Opțiune invalidă. Încearcă din nou.");
+            }
+        }
 
         boolean continuaAdaugare = true;
         while (continuaAdaugare) {
 
-            System.out.println("Doriți să adăugați un sos?");
+            System.out.println("Doriți să adăugați un sos? (maxim 3)");
             System.out.println("1. Da");
             System.out.println("2. Nu");
             System.out.print("Alege opțiunea: ");
@@ -160,29 +196,28 @@ public class Main {
                     break;
                 }
                 listeazaSosuri();
-                System.out.print("Introduceți numele sosului: ");
-                String nume = scanner.nextLine().trim().toLowerCase();
-
-                Optional<Sos> sosOptional = listaSosuri.stream()
-                        .filter(s -> s.getNume().toLowerCase().equals(nume))
-                        .findFirst();
-
-                if (sosOptional.isPresent()) {
-                    Sos sos = sosOptional.get();
-                    try {
-                        if (sos.esteFermentabil()) {
-                            SosFermentabil sf = (SosFermentabil) sos;
-                            builder.adaugaSosFermentabil(sf.getNume(), sf.getOreValabilitate());
-                        } else {
-                            builder.adaugaSos(sos.getNume());
-                        }
-                    } catch (LimitaSosDepasitaException e) {
-                        System.out.println(e.getMessage());
-                        break;
+                System.out.print("Introduceți indexul sosului (1 - " + (listaSosuri.size()) + "): ");
+        try {
+            int index = Integer.parseInt(scanner.nextLine()) - 1;
+            if (index >= 0 && index < listaSosuri.size()) {
+                Sos sos = listaSosuri.get(index);
+                try {
+                    if (sos.esteFermentabil()) {
+                        SosFermentabil sf = (SosFermentabil) sos;
+                        builder.adaugaSosFermentabil(sf.getNume(), sf.getOreValabilitate());
+                    } else {
+                        builder.adaugaSos(sos.getNume());
                     }
-                } else {
-                    System.out.println("Sosul nu există în lista de sosuri create.");
+                } catch (LimitaSosDepasitaException e) {
+                    System.out.println(e.getMessage());
+                    break;
                 }
+            } else {
+                System.out.println("Index invalid. Încearcă din nou.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Te rog introdu un număr valid.");
+        }
 
             } else if (raspuns.equals("2")) {
                 continuaAdaugare = false;
