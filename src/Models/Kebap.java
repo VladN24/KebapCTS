@@ -40,12 +40,7 @@ public class Kebap implements IKebap {
 
     private String getNumeSosuri() {
         return sosuri.stream()
-                .map(sos -> {
-                    if (sos instanceof SosFermentabil sf) {
-                        return sf.getTip() + "(" + sf.getOreValabilitate() + "h)";
-                    }
-                    return sos.getTip().toString();
-                })
+                .map(Sos::toString) // se apelează toString() specific fiecărui tip de Sos
                 .collect(Collectors.joining(", "));
     }
 

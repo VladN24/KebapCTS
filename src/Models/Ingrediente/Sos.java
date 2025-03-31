@@ -1,17 +1,16 @@
 package Models.Ingrediente;
 
-import enums.TipSos;
-
 public class Sos extends Ingredient {
-    private TipSos tip;
-
-    public Sos(TipSos tip) {
-        super(tip.name());
-        this.tip = tip;
+    public Sos(String nume) {
+        super(nume.toLowerCase());
     }
 
-    public TipSos getTip() {
-        return tip;
+    public String getNume() {
+        return nume;
     }
 
+    @Override
+    public String toString() {
+        return getNume();
+    }
 }

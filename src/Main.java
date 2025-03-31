@@ -17,12 +17,12 @@ public class Main {
     public static void main(String[] args) {
         boolean running = true;
 
-        listaSosuri.add(new Sos(TipSos.MAIONEZA));
-        listaSosuri.add(new Sos(TipSos.KETCHUP));
-        listaSosuri.add(new Sos(TipSos.USTUROI));
-        listaSosuri.add(new Sos(TipSos.TAHINI));
-        listaSosuri.add(new SosFermentabil(TipSos.SAMURAI, 8));
-        listaSosuri.add(new SosFermentabil(TipSos.TZATZIKI, 12));
+        listaSosuri.add(new Sos("Maioneza"));
+        listaSosuri.add(new Sos("Ketchup"));
+        listaSosuri.add(new Sos("Usturoi"));
+        listaSosuri.add(new Sos("Tahini"));
+        listaSosuri.add(new SosFermentabil("Samurai", 8));
+        listaSosuri.add(new SosFermentabil("Tzatziki", 12));
 
         KebapBuilder builder = new KebapBuilder();
         try {
@@ -32,9 +32,9 @@ public class Main {
                     .adaugaMuratura(TipMuratura.CASTRAVETI)
                     .adaugaFibra(TipFibre.VARZA)
                     .adaugaHealthy(TipHealthy.RIDICHE)
-                    .adaugaSos(TipSos.USTUROI)
-                    .adaugaSos(TipSos.MAIONEZA)
-                    .adaugaSosFermentabil(TipSos.SAMURAI,8);
+                    .adaugaSos("Usturoi")
+                    .adaugaSos("Maioneza")
+                    .adaugaSosFermentabil("Samurai",8);
 
             Kebap kebapImplicit = builder.build();
             listaKebapuri.add(kebapImplicit);
@@ -63,9 +63,9 @@ public class Main {
                 case 3 -> listeazaKebapuri();
                 case 4 -> filtreazaDupaProteina();
                 case 5 -> creeazaSos();
-                case 6 -> stergeSos();
-                case 7 -> serializeazaSosuri();
-                case 8 -> deserializareSosuri();
+                //case 6 -> stergeSos();
+                //case 7 -> serializeazaSosuri();
+                //case 8 -> deserializareSosuri();
                 case 0 -> running = false;
                 default -> System.out.println("Opțiune invalidă.");
             }
@@ -84,20 +84,36 @@ public class Main {
     private static void creeazaKebap() {
         KebapBuilder builder = new KebapBuilder();
 
-        System.out.println("Alege proteina:");
-        TipProteina tipProteina = selectEnumOption(TipProteina.class);
-        if (tipProteina == TipProteina.FARA) {
-            throw new LipsaProteinaException("Kebap-ul trebuie să aibă o sursă de proteină.");
-        } else {
-            builder.adaugaProteina(tipProteina);
+        TipProteina tipProteina = null;
+        boolean proteinaValida = false;
+        while (!proteinaValida) {
+            try {
+                System.out.println("Alege proteina:");
+                tipProteina = selectEnumOption(TipProteina.class);
+                if (tipProteina == TipProteina.FARA) {
+                    throw new LipsaProteinaException("Kebap-ul trebuie să aibă o sursă de proteină.");
+                }
+                builder.adaugaProteina(tipProteina);
+                proteinaValida = true;
+            } catch (LipsaProteinaException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
-        System.out.println("Alege carbohidrat:");
-        TipCarbohidrat tipCarbohidrat = selectEnumOption(TipCarbohidrat.class);
-        if (tipCarbohidrat == TipCarbohidrat.FARA) {
-            throw new LipsaCarbohidratException();
-        } else {
-            builder.adaugaCarbohidrat(tipCarbohidrat);
+        TipCarbohidrat tipCarbohidrat = null;
+        boolean carboValida = false;
+        while (!carboValida) {
+            try {
+                System.out.println("Alege carbohidrat:");
+                tipCarbohidrat = selectEnumOption(TipCarbohidrat.class);
+                if (tipCarbohidrat == TipCarbohidrat.FARA) {
+                    throw new LipsaCarbohidratException();
+                }
+                builder.adaugaCarbohidrat(tipCarbohidrat);
+                carboValida = true;
+            } catch (LipsaCarbohidratException e) {
+            System.out.println(e.getMessage());
+            }
         }
 
         System.out.println("Alege înveliș:");
@@ -129,27 +145,54 @@ public class Main {
         System.out.println("Alege healthy:");
         builder.adaugaHealthy(selectEnumOption(TipHealthy.class));
 
-        System.out.print("Câte sosuri vrei să adaugi (max 3): ");
-        int nrSosuri = Integer.parseInt(scanner.nextLine());
-        for (int i = 0; i < nrSosuri; i++) {
-            System.out.println("Alege sosul " + (i + 1) + ":");
-            TipSos tip = selectEnumOption(TipSos.class);
-            Optional<Sos> sosOptional = listaSosuri.stream().filter(s -> s.getTip() == tip).findFirst();
-            if (sosOptional.isPresent()) {
-                Sos sos = sosOptional.get();
-                if (sos instanceof SosFermentabil sf) {
-                    builder.adaugaSosFermentabil(sf.getTip(), sf.getOreValabilitate());
-                } else {
-                    builder.adaugaSos(sos.getTip());
+        boolean continuaAdaugare = true;
+        while (continuaAdaugare) {
+
+            System.out.println("Doriți să adăugați un sos?");
+            System.out.println("1. Da");
+            System.out.println("2. Nu");
+            System.out.print("Alege opțiunea: ");
+            String raspuns = scanner.nextLine();
+
+            if (raspuns.equals("1")) {
+                if (builder.getNumarSosuri() >= 3) {
+                    System.out.println("Ai atins numărul maxim de 3 sosuri.");
+                    break;
                 }
+                listeazaSosuri();
+                System.out.print("Introduceți numele sosului: ");
+                String nume = scanner.nextLine().trim().toLowerCase();
+
+                Optional<Sos> sosOptional = listaSosuri.stream()
+                        .filter(s -> s.getNume().toLowerCase().equals(nume))
+                        .findFirst();
+
+                if (sosOptional.isPresent()) {
+                    Sos sos = sosOptional.get();
+                    try {
+                        if (sos instanceof SosFermentabil sf) {
+                            builder.adaugaSosFermentabil(sf.getNume(), sf.getOreValabilitate());
+                        } else {
+                            builder.adaugaSos(sos.getNume());
+                        }
+                    } catch (LimitaSosDepasitaException e) {
+                        System.out.println(e.getMessage());
+                        break;
+                    }
+                } else {
+                    System.out.println("Sosul nu există în lista de sosuri create.");
+                }
+
+            } else if (raspuns.equals("2")) {
+                continuaAdaugare = false;
             } else {
-                System.out.println("Sosul nu există în lista de sosuri create.");
+                System.out.println("Opțiune invalidă. Te rog alege 1 sau 2.");
             }
         }
-
-        Kebap k = builder.build();
-        listaKebapuri.add(k);
+        Kebap kebap = builder.build();
+        listaKebapuri.add(kebap);
         System.out.println("Kebap creat cu succes!");
+        System.out.println(kebap);
     }
 
     private static void stergeKebap() {
@@ -175,73 +218,116 @@ public class Main {
         TipProteina tip = selectEnumOption(TipProteina.class);
         List<Kebap> filtrate = listaKebapuri.stream()
                 .filter(k -> k.getProteina().getTip() == tip)
-                .collect(Collectors.toList());
+                .toList();
 
         filtrate.forEach(System.out::println);
     }
 
+    private static void listeazaSosuri() {
+    if (listaSosuri.isEmpty()) {
+        System.out.println("Nu există sosuri în listă.");
+        return;
+    }
+    System.out.println("\nLista sosurilor disponibile:");
+    for (int i = 0; i < listaSosuri.size(); i++) {
+        Sos sos = listaSosuri.get(i);
+        if (sos instanceof SosFermentabil sf) {
+            System.out.println((i + 1) + ". " + sf.getNume() + " (fermentabil - " + sf.getOreValabilitate() + "h)");
+        } else {
+            System.out.println((i + 1) + ". " + sos.getNume());
+        }
+    }
+}
+
     private static void creeazaSos() {
-        System.out.println("Alege tipul de sos:");
-        TipSos tip = selectEnumOption(TipSos.class);
-        if (tip == TipSos.SAMURAI || tip == TipSos.TZATZIKI) {
-            System.out.print("Valabilitate (ore): ");
-            int ore = Integer.parseInt(scanner.nextLine());
-            listaSosuri.add(new SosFermentabil(tip, ore));
-        } else {
-            listaSosuri.add(new Sos(tip));
-        }
-        System.out.println("Sos adăugat.");
-    }
+        System.out.print("Introduceți numele sosului: ");
+        String numeSos = scanner.nextLine().trim();
 
-    private static void stergeSos() {
-        for (int i = 0; i < listaSosuri.size(); i++) {
-            System.out.println(i + ". " + listaSosuri.get(i).getNume());
-        }
-        System.out.print("Indice sos de șters: ");
-        int index = Integer.parseInt(scanner.nextLine());
-        if (index >= 0 && index < listaSosuri.size()) {
-            listaSosuri.remove(index);
-            System.out.println("Sos șters.");
-        } else {
-            System.out.println("Index invalid.");
-        }
-    }
+        boolean exista = listaSosuri.stream()
+                .anyMatch(s -> s.getNume().equalsIgnoreCase(numeSos));
 
-    private static void serializeazaSosuri() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(SOS_FILE))) {
-            for (Sos sos : listaSosuri) {
-                if (sos instanceof SosFermentabil sf) {
-                    writer.write(sf.getTip() + "," + sf.getOreValabilitate());
-                } else {
-                    writer.write(sos.getTip().toString());
+        if (exista) {
+            System.out.println("Sosul \"" + numeSos + "\" există deja în listă.");
+            return;
+        }
+
+        System.out.print("Este sosul fermentabil? (1. Da / 2. Nu): ");
+        String raspuns = scanner.nextLine().trim();
+        boolean sosAdaugat = false;
+        if (raspuns.equals("1")) {
+            try {
+                System.out.print("Valabilitate în ore: ");
+                int ore = Integer.parseInt(scanner.nextLine());
+                if (ore <= 0) {
+                    System.out.println("Valabilitatea trebuie să fie mai mare decât 0.");
+                    return;
                 }
-                writer.newLine();
+                listaSosuri.add(new SosFermentabil(numeSos, ore));
+                sosAdaugat = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Introdu un număr valid pentru ore.");
             }
-            System.out.println("Sosuri salvate în fișier.");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else if (raspuns.equals("2")) {
+            listaSosuri.add(new Sos(numeSos));
+            sosAdaugat = true;
+        } else {
+            System.out.println("Opțiune invalidă. Sosul nu a fost adăugat.");
+        }
+        if (sosAdaugat) {
+            System.out.println("Sos adăugat cu succes.");
         }
     }
 
-    private static void deserializareSosuri() {
-        listaSosuri.clear();
-        try (BufferedReader reader = new BufferedReader(new FileReader(SOS_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                TipSos tip = TipSos.valueOf(parts[0]);
-                if (parts.length == 2) {
-                    int ore = Integer.parseInt(parts[1]);
-                    listaSosuri.add(new SosFermentabil(tip, ore));
-                } else {
-                    listaSosuri.add(new Sos(tip));
-                }
-            }
-            System.out.println("Sosuri încărcate din fișier.");
-            System.out.println(listaSosuri);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//
+//    private static void stergeSos() {
+//        for (int i = 0; i < listaSosuri.size(); i++) {
+//            System.out.println(i + ". " + listaSosuri.get(i).getNume());
+//        }
+//        System.out.print("Indice sos de șters: ");
+//        int index = Integer.parseInt(scanner.nextLine());
+//        if (index >= 0 && index < listaSosuri.size()) {
+//            listaSosuri.remove(index);
+//            System.out.println("Sos șters.");
+//        } else {
+//            System.out.println("Index invalid.");
+//        }
+//    }
+//
+//    private static void serializeazaSosuri() {
+//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(SOS_FILE))) {
+//            for (Sos sos : listaSosuri) {
+//                if (sos instanceof SosFermentabil sf) {
+//                    writer.write(sf.getTip() + "," + sf.getOreValabilitate());
+//                } else {
+//                    writer.write(sos.getTip().toString());
+//                }
+//                writer.newLine();
+//            }
+//            System.out.println("Sosuri salvate în fișier.");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private static void deserializareSosuri() {
+//        listaSosuri.clear();
+//        try (BufferedReader reader = new BufferedReader(new FileReader(SOS_FILE))) {
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                String[] parts = line.split(",");
+//                TipSos tip = TipSos.valueOf(parts[0]);
+//                if (parts.length == 2) {
+//                    int ore = Integer.parseInt(parts[1]);
+//                    listaSosuri.add(new SosFermentabil(tip, ore));
+//                } else {
+//                    listaSosuri.add(new Sos(tip));
+//                }
+//            }
+//            System.out.println("Sosuri încărcate din fișier.");
+//            System.out.println(listaSosuri);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

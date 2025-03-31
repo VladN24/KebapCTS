@@ -1,16 +1,19 @@
 package Models.Ingrediente;
 
-import enums.TipSos;
-
 public class SosFermentabil extends Sos {
     private int oreValabilitate;
 
-    public SosFermentabil(TipSos tip, Integer oreValabilitate) {
-        super(tip);
+    public SosFermentabil(String nume, int oreValabilitate) {
+        super(nume);
         this.oreValabilitate = oreValabilitate;
     }
 
     public int getOreValabilitate() {
         return oreValabilitate;
+    }
+
+    @Override
+    public String toString() {
+        return getNume() + " (valabil " + oreValabilitate + "h)";
     }
 }

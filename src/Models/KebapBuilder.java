@@ -49,26 +49,25 @@ public class KebapBuilder implements IBuilder {
         return this;
     }
 
-    public KebapBuilder adaugaSos(TipSos tip) {
-        if (sosuriTemp.size() >= 3) {
-            throw new LimitaSosDepasitaException();
-        }
-        if (kebap.getProteina() == null) {
-            throw new LipsaProteinaException("Nu poți adăuga sosuri fără proteină.");
-        }
-        sosuriTemp.add(new Sos(tip));
+    public KebapBuilder adaugaSos(String nume) {
+        valideazaAdaugareSos();
+        sosuriTemp.add(new Sos(nume));
         return this;
     }
 
-    public KebapBuilder adaugaSosFermentabil(TipSos tip, int oreValabilitate) {
+    public KebapBuilder adaugaSosFermentabil(String nume, int oreValabilitate) {
+        valideazaAdaugareSos();
+        sosuriTemp.add(new SosFermentabil(nume, oreValabilitate));
+        return this;
+    }
+
+    private void valideazaAdaugareSos() {
         if (sosuriTemp.size() >= 3) {
             throw new LimitaSosDepasitaException();
         }
         if (kebap.getProteina() == null) {
             throw new LipsaProteinaException("Nu poți adăuga sosuri fără proteină.");
         }
-        sosuriTemp.add(new SosFermentabil(tip, oreValabilitate));
-        return this;
     }
 
 
@@ -95,4 +94,7 @@ public class KebapBuilder implements IBuilder {
         return kebap;
     }
 
+    public int getNumarSosuri() {
+        return sosuriTemp.size();
+    }
 }
