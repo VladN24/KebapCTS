@@ -1,7 +1,13 @@
 package Models.Ingrediente;
 
-public class SosFermentabil extends Sos {
+import interfaces.ISos;
+
+public class SosFermentabil extends Sos implements ISos {
     private int oreValabilitate;
+
+   public boolean esteFermentabil(){
+        return true;
+    };
 
     public SosFermentabil(String nume, int oreValabilitate) {
         super(nume);

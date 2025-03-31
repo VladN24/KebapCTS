@@ -1,6 +1,6 @@
-MAIONEZA
-KETCHUP
-USTUROI
-TAHINI
-SAMURAI,8
-TZATZIKI,12
+maioneza
+ketchup
+usturoi
+tahini
+samurai,8
+tzatziki,12

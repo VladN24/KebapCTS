@@ -63,9 +63,9 @@ public class Main {
                 case 3 -> listeazaKebapuri();
                 case 4 -> filtreazaDupaProteina();
                 case 5 -> creeazaSos();
-                //case 6 -> stergeSos();
-                //case 7 -> serializeazaSosuri();
-                //case 8 -> deserializareSosuri();
+                case 6 -> stergeSos();
+                case 7 -> serializeazaSosuri();
+                case 8 -> deserializareSosuri();
                 case 0 -> running = false;
                 default -> System.out.println("Opțiune invalidă.");
             }
@@ -170,7 +170,8 @@ public class Main {
                 if (sosOptional.isPresent()) {
                     Sos sos = sosOptional.get();
                     try {
-                        if (sos instanceof SosFermentabil sf) {
+                        if (sos.esteFermentabil()) {
+                            SosFermentabil sf = (SosFermentabil) sos;
                             builder.adaugaSosFermentabil(sf.getNume(), sf.getOreValabilitate());
                         } else {
                             builder.adaugaSos(sos.getNume());
@@ -278,56 +279,59 @@ public class Main {
         }
     }
 
-//
-//    private static void stergeSos() {
-//        for (int i = 0; i < listaSosuri.size(); i++) {
-//            System.out.println(i + ". " + listaSosuri.get(i).getNume());
-//        }
-//        System.out.print("Indice sos de șters: ");
-//        int index = Integer.parseInt(scanner.nextLine());
-//        if (index >= 0 && index < listaSosuri.size()) {
-//            listaSosuri.remove(index);
-//            System.out.println("Sos șters.");
-//        } else {
-//            System.out.println("Index invalid.");
-//        }
-//    }
-//
-//    private static void serializeazaSosuri() {
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(SOS_FILE))) {
-//            for (Sos sos : listaSosuri) {
-//                if (sos instanceof SosFermentabil sf) {
-//                    writer.write(sf.getTip() + "," + sf.getOreValabilitate());
-//                } else {
-//                    writer.write(sos.getTip().toString());
-//                }
-//                writer.newLine();
-//            }
-//            System.out.println("Sosuri salvate în fișier.");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private static void deserializareSosuri() {
-//        listaSosuri.clear();
-//        try (BufferedReader reader = new BufferedReader(new FileReader(SOS_FILE))) {
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                String[] parts = line.split(",");
-//                TipSos tip = TipSos.valueOf(parts[0]);
-//                if (parts.length == 2) {
-//                    int ore = Integer.parseInt(parts[1]);
-//                    listaSosuri.add(new SosFermentabil(tip, ore));
-//                } else {
-//                    listaSosuri.add(new Sos(tip));
-//                }
-//            }
-//            System.out.println("Sosuri încărcate din fișier.");
-//            System.out.println(listaSosuri);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private static void stergeSos() {
+        listeazaSosuri();
+        System.out.print("Introduceți indexul sosului de șters: ");
+        try {
+            int index = Integer.parseInt(scanner.nextLine()) - 1;
+            if (index >= 0 && index < listaSosuri.size()) {
+                Sos sosSters = listaSosuri.remove(index);
+                System.out.println("Sosul \"" + sosSters.getNume() + "\" a fost șters cu succes.");
+            } else {
+                System.out.println("Index invalid.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Valoare introdusă invalidă. Trebuie introdus un număr.");
+        }
+    }
+
+    private static void serializeazaSosuri() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(SOS_FILE))) {
+            for (Sos sos : listaSosuri) {
+                if (sos.esteFermentabil()) {
+                    SosFermentabil sf = (SosFermentabil) sos;
+                    writer.write(sf.getNume() + "," + sf.getOreValabilitate());
+                } else {
+                    writer.write(sos.getNume());
+                }
+                writer.newLine();
+            }
+            System.out.println("Sosuri salvate în fișier.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void deserializareSosuri() {
+        listaSosuri.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(SOS_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    String nume = parts[0].trim();
+                    int ore = Integer.parseInt(parts[1].trim());
+                    listaSosuri.add(new SosFermentabil(nume, ore));
+                } else {
+                    listaSosuri.add(new Sos(parts[0].trim()));
+                }
+            }
+            System.out.println("Sosuri încărcate din fișier.");
+            listeazaSosuri();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
