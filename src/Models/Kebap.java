@@ -32,6 +32,7 @@ public class Kebap implements IKebap {
                 "proteina=" + proteina.getNume() +
                 ", carbohidrat=" + carbohidrat.getNume() +
                 ", invelis=" + (invelis != null ? invelis.getNume() : "N/A") +
+                ", muratura=" + (muratura != null ? muratura.getNume() : "N/A") +
                 ", fibra=" + (fibre != null ? fibre.getNume() : "N/A") +
                 ", healthy=" + (healthy != null ? healthy.getNume() : "N/A") +
                 ", sosuri=" + getNumeSosuri() +
@@ -40,7 +41,7 @@ public class Kebap implements IKebap {
 
     private String getNumeSosuri() {
         return sosuri.stream()
-                .map(Sos::toString) // se apelează toString() specific fiecărui tip de Sos
+                .map(Sos::toString)
                 .collect(Collectors.joining(", "));
     }
 
@@ -49,36 +50,9 @@ public class Kebap implements IKebap {
         return proteina;
     }
 
-
     public Carbohidrat getCarbohidrat() {
         return carbohidrat;
     }
-
-
-    public List<Sos> getSosuri() {
-        return sosuri;
-    }
-
-
-    public Muratura getMuratura() {
-        return muratura;
-    }
-
-
-    public Invelis getInvelis() {
-        return invelis;
-    }
-
-
-    public Fibre getFibre() {
-        return fibre;
-    }
-
-
-    public Healthy getHealthy() {
-        return healthy;
-    }
-
 
     public void setProteina(Proteina proteina) {
         this.proteina = proteina;

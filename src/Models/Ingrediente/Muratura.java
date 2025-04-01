@@ -10,7 +10,4 @@ public class Muratura extends Ingredient {
         this.tip = tip;
     }
 
-    public TipMuratura getTip() {
-        return tip;
-    }
 }

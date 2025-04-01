@@ -10,7 +10,4 @@ public class Healthy extends Ingredient {
         this.tip = tip;
     }
 
-    public TipHealthy getTip() {
-        return tip;
-    }
 }

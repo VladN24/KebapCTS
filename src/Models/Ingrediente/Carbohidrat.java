@@ -10,5 +10,4 @@ public class Carbohidrat extends Ingredient {
         this.tip = tip;
     }
 
-    public TipCarbohidrat getTip() { return tip; }
 }

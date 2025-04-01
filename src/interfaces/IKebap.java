@@ -7,11 +7,6 @@ import java.util.List;
 public interface IKebap {
     Proteina getProteina();
     Carbohidrat getCarbohidrat();
-    List<Sos> getSosuri();
-    Muratura getMuratura();
-    Invelis getInvelis();
-    Fibre getFibre();
-    Healthy getHealthy();
 
     void setProteina(Proteina proteina);
     void setCarbohidrat(Carbohidrat carbohidrat);

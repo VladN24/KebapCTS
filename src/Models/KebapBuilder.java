@@ -2,13 +2,13 @@ package Models;
 
 import Models.Ingrediente.*;
 import enums.*;
-import exceptions.LipsaCarbohidratException;
-import exceptions.LipsaProteinaException;
-import exceptions.LimitaSosDepasitaException;
 import interfaces.IBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static Models.Validator.valideazaAdaugareSos;
+import static Models.Validator.valideazaKebapFinalizat;
 
 public class KebapBuilder implements IBuilder {
     private Kebap kebap; //= new Kebap();
@@ -50,46 +50,21 @@ public class KebapBuilder implements IBuilder {
     }
 
     public KebapBuilder adaugaSos(String nume) {
-        valideazaAdaugareSos();
+        valideazaAdaugareSos(sosuriTemp,kebap);
         sosuriTemp.add(new Sos(nume));
         return this;
     }
 
     public KebapBuilder adaugaSosFermentabil(String nume, int oreValabilitate) {
-        valideazaAdaugareSos();
+        valideazaAdaugareSos(sosuriTemp,kebap);
         sosuriTemp.add(new SosFermentabil(nume, oreValabilitate));
         return this;
     }
 
-    private void valideazaAdaugareSos() {
-        if (sosuriTemp.size() >= 3) {
-            throw new LimitaSosDepasitaException();
-        }
-        if (kebap.getProteina() == null) {
-            throw new LipsaProteinaException("Nu poți adăuga sosuri fără proteină.");
-        }
-    }
 
-
-    private void valideazaProteina() {
-        if (kebap.getProteina() == null) {
-            throw new LipsaProteinaException("Kebap-ul trebuie să aibă o sursă de proteină.");
-        }
-    }
-
-    private void valideazaCarbohidrat() {
-        if (kebap.getCarbohidrat() == null) {
-            throw new LipsaCarbohidratException();
-        }
-    }
-
-    private void valideazaCompozitie() {
-        valideazaProteina();
-        valideazaCarbohidrat();
-    }
 
     public Kebap build() {
-        valideazaCompozitie();
+        valideazaKebapFinalizat(kebap);
         kebap.setSosuri(sosuriTemp);
         return kebap;
     }

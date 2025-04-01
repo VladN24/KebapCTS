@@ -10,7 +10,4 @@ public class Fibre extends Ingredient {
         this.tip = tip;
     }
 
-    public TipFibre getTip() {
-        return tip;
-    }
 }

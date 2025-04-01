@@ -10,7 +10,4 @@ public class Invelis extends Ingredient {
         this.tip = tip;
     }
 
-    public TipInvelis getTip() {
-        return tip;
-    }
 }
