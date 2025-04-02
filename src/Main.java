@@ -234,12 +234,16 @@ public class Main {
     private static void stergeKebap() {
         listeazaKebapuri();
         System.out.print("Indice kebap de șters: ");
-        int index = Integer.parseInt(scanner.nextLine());
-        if (index >= 0 && index < listaKebapuri.size()) {
-            listaKebapuri.remove(index);
-            System.out.println("Kebap șters.");
-        } else {
-            System.out.println("Index invalid.");
+        try {
+            int index = Integer.parseInt(scanner.nextLine());
+            if (index >= 0 && index < listaKebapuri.size()) {
+                listaKebapuri.remove(index);
+                System.out.println("Kebap șters.");
+            } else {
+                System.out.println("Index invalid.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Trebuie introdus un număr valid.");
         }
     }
 
@@ -250,13 +254,20 @@ public class Main {
     }
 
     private static void filtreazaDupaProteina() {
-        System.out.println("Alege proteina pentru filtrare:");
-        TipProteina tip = selectEnumOption(TipProteina.class);
-        List<Kebap> filtrate = listaKebapuri.stream()
-                .filter(k -> k.getProteina().getTip() == tip)
-                .toList();
-
-        filtrate.forEach(System.out::println);
+        try {
+            System.out.println("Alege proteina pentru filtrare:");
+            TipProteina tip = selectEnumOption(TipProteina.class);
+            List<Kebap> filtrate = listaKebapuri.stream()
+                    .filter(k -> k.getProteina().getTip() == tip)
+                    .toList();
+            if(filtrate.isEmpty()) {
+                System.out.println("Nu există kebapuri cu proteina selectată.");
+            } else {
+                filtrate.forEach(System.out::println);
+            }
+        } catch (Exception e) {
+            System.out.println("Opțiune invalidă.");
+        }
     }
 
     private static void listeazaSosuri() {
