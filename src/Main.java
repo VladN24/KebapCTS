@@ -266,7 +266,7 @@ public class Main {
                 filtrate.forEach(System.out::println);
             }
         } catch (Exception e) {
-            System.out.println("Opțiune invalidă.");
+            System.out.println("Opțiunea este invalidă.");
         }
     }
 
